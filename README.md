@@ -1,6 +1,6 @@
 # Base boxes
 
-Powered by [![Packer](https://raw.githubusercontent.com/MartijnSips/vagrant-base-boxes/develop/Logos/packer.png "Packer")](http://www.packer.io).
+Powered by [![Packer](https://raw.githubusercontent.com/MartijnSips/vagrant-base-boxes/develop/logos/Packer.png "Packer")](http://www.packer.io).
 
 ## Overview
 
