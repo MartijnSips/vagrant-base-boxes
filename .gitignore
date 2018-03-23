@@ -1,0 +1,14 @@
+# Packer output
+build
+packer_cache
+output-*
+
+# Iso's
+iso/*
+!iso/README.md
+
+# IntellIJ files
+.idea
+
+# Generated files
+*.tmp
