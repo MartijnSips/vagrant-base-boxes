@@ -41,7 +41,7 @@
       "http_directory": "{{user `http_directory`}}",
       "http_port_max": "{{user `http_port_max`}}",
       "http_port_min": "{{user `http_port_min`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_url": "{{user `iso_checksum_url`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_url": "{{user `iso_url`}}",
       "keep_registered": false,
@@ -100,8 +100,10 @@
         "mount -t iso9660 -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /tmp/isomount",
         "/tmp/isomount/VBoxLinuxAdditions.run",
         "echo Updating/Upgrading ubuntu ...",
-        "apt-get install ansible -y",
-        "apt-get update && sudo apt-get upgrade -y"
+        "apt-get install software-properties-common -y",
+        "apt-add-repository 'ppa:ansible/ansible' -y",
+        "apt-get update && apt-get upgrade -y",
+        "apt-get install ansible -y"
       ]
     }
   ],
@@ -115,17 +117,16 @@
     "boot_wait": "3s",
     "communicator": "ssh",
     "country": "CA",
-    "description": "Base box for 64-bit x86 Ubuntu Xenial Beaver 16.04.x LTS",
+    "description": "Base box for 64-bit x86 Ubuntu Xenial 16.04.x LTS",
     "disk_size": "50000",
     "domain": "",
     "headless": "false",
     "http_directory": ".",
     "http_port_max": "9000",
     "http_port_min": "8000",
-    "iso_checksum_type": "sha1",
-    "iso_checksum": "eeb9c4a18e1d0fc05abf95d945861d18f4421047",
-    "iso_file": "xenial-server-amd64.iso",
-    "iso_url": "./iso/xenial-server-amd64.iso",
+    "iso_checksum_type": "sha256",
+    "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu-server/xenial/daily/current/SHA256SUMS",
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu-server/xenial/daily/current/xenial-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
     "locale": "en_CA.UTF-8",
@@ -146,7 +147,6 @@
     "ssh_timeout": "60m",
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
-    "vagrantfile_template": "ubuntu/bionic/base.vagrant",
     "version": "0.0.0",
     "vm_name": "UbuntuMate1604LTS"
   }
