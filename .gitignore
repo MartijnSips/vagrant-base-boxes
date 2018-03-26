@@ -2,6 +2,7 @@
 build
 packer_cache
 output-*
+*.box
 
 # Iso's
 iso/*
