@@ -76,7 +76,63 @@
       ],
       "virtualbox_version_file": "/tmp/.vbox_version",
       "vm_name": "{{user `vm_name`}}"
-	  }
+    },
+    {
+      "type": "hyperv-iso",
+      "name": "hyperv",
+      "output_directory": "{{user `output_directory`}}",
+      "boot_command": [
+          "<esc><f6><esc>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+          "<bs><bs><bs>",
+          "initrd=/install/initrd.gz ",
+          "auto=true ",
+          "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `preseed_file`}} ",
+          "language={{user `language`}} ",
+          "country={{user `country`}} ",
+          "locale={{user `locale`}} ",
+          "hostname={{user `vm_name`}} ",
+          "domain={{user `domain`}} ",
+          "interface=auto ",
+          "console-setup/ask_detect=false ",
+          "keyboard-configuration/layoutcode={{user `keyboard`}} ",
+          "vga=788 noprompt quiet --<enter>"
+        ],
+        "boot_wait": "{{user `boot_wait`}}",
+        "communicator": "{{user `communicator`}}",
+        "disk_size": "{{user `disk_size`}}",
+        "guest_additions_mode": "disable",
+        "http_directory": "{{user `http_directory`}}",
+        "http_port_max": "{{user `http_port_max`}}",
+        "http_port_min": "{{user `http_port_min`}}",
+        "iso_checksum_url": "{{user `iso_checksum_url`}}",
+        "iso_checksum_type": "{{user `iso_checksum_type`}}",
+        "iso_url": "{{user `iso_url`}}",
+        "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
+        "shutdown_timeout": "{{user `shutdown_timeout`}}",
+        "skip_export": false,
+        "ssh_disable_agent_forwarding": "{{user `ssh_disable_agent_forwarding`}}",
+        "ssh_file_transfer_method": "{{user `ssh_file_transfer_method`}}",
+        "ssh_handshake_attempts": "{{user `ssh_handshake_attempts`}}",
+        "ssh_password": "{{user `ssh_password`}}",
+        "ssh_port": "{{user `ssh_port`}}",
+        "ssh_pty": "{{user `ssh_pty`}}",
+        "ssh_timeout": "{{user `ssh_timeout`}}",
+        "ssh_username": "{{user `ssh_username`}}",
+        "cpu": 1,
+        "ram_size": "{{user `ram_size`}}",
+        "generation": 2,
+        "switch_name": "Wifi",
+        "enable_secure_boot": "true",
+        "vm_name": "{{user `vm_name`}}"
+      }
   ],
   "provisioners": [
     {
@@ -105,12 +161,22 @@
       ]
     }
   ],
-  "post-processors": [{
-    "type": "vagrant",
-    "keep_input_artifact": false,
-    "vagrantfile_template": "{{user `vm_name`}}.template",
-    "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
-  }],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false,
+        "vagrantfile_template": "{{user `vm_name`}}.template",
+        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "martijnsips/{{ user `vm_name` }}",
+        "access_token": "{{ user `cloud_token` }}",
+        "version": "{{ user `version` }}"
+      }
+    ]
+  ],
   "variables": {
     "boot_wait": "3s",
     "communicator": "ssh",
@@ -123,8 +189,8 @@
     "http_port_max": "9000",
     "http_port_min": "8000",
     "iso_checksum_type": "sha256",
-    "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu-server/bionic/daily/current/SHA256SUMS",
-    "iso_url": "http://cdimage.ubuntu.com/ubuntu-server/bionic/daily/current/xenial-server-amd64.iso",
+    "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/SHA256SUMS",
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
     "locale": "en_CA.UTF-8",
@@ -145,7 +211,8 @@
     "ssh_timeout": "60m",
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
-    "version": "0.0.0",
-    "vm_name": "UbuntuMate1804LTS"
+    "vm_name": "UbuntuMate1804LTS",
+    "cloud_token": "<place here your vagrant cloud access token>",
+	  "version": "1.0.0"
   }
 }
