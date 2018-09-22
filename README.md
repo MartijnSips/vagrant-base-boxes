@@ -33,3 +33,21 @@ Execute the following command
 This will take approximately 1 hour to build.
 
 Then it will try to upload your image.
+
+## Changes
+
+### 1.0.1
+
+#### Ubuntu 18.04 LTS
+
+- Updated to 18.04.1
+- Removed mapping of Downloads directory from Vagrant file
+- Updated language from CA to US
+
+#### Ubuntu 16.04 LTS
+
+- Removed mapping of Downloads directory from Vagrant file
+
+#### Windows 10 Professional
+
+- Removed mapping of Downloads directory from Vagrant file

@@ -107,17 +107,27 @@
       ]
     }
   ],
-  "post-processors": [{
-    "type": "vagrant",
-    "keep_input_artifact": false,
-    "vagrantfile_template": "{{user `vm_name`}}.template",
-    "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
-  }],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false,
+        "vagrantfile_template": "{{user `vm_name`}}.template",
+        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "martijnsips/{{ user `vm_name` }}",
+        "access_token": "{{ user `cloud_token` }}",
+        "version": "{{ user `version` }}"
+      }
+    ]
+  ],
   "variables": {
     "boot_wait": "3s",
     "communicator": "ssh",
-    "country": "CA",
-    "description": "Base box for 64-bit x86 Ubuntu Xenial 16.04.x LTS",
+    "country": "US",
+    "description": "Base box for 64-bit x86 Ubuntu Xenial 16.04.5 LTS",
     "disk_size": "50000",
     "domain": "",
     "headless": "false",
@@ -125,14 +135,14 @@
     "http_port_max": "9000",
     "http_port_min": "8000",
     "iso_checksum_type": "sha256",
-    "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu-server/xenial/daily/current/SHA256SUMS",
-    "iso_url": "http://cdimage.ubuntu.com/ubuntu-server/xenial/daily/current/xenial-server-amd64.iso",
+    "iso_checksum_url": "http://releases.ubuntu.com/16.04/SHA256SUMS",
+    "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.5-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
-    "locale": "en_CA.UTF-8",
+    "locale": "en_US.UTF-8",
     "output_directory": "build/{{isotime \"2006-01-02-15-04-05\"}}",
     "packer_cache_dir": "{{env `PACKER_CACHE_DIR`}}",
-    "preseed_file": "scripts/ubuntu/1604/preceed.cfg",
+    "preseed_file": "scripts/ubuntu/1604/preseed.cfg",
     "qemu_binary": "qemu-system-x86_64",
     "ram_size": "2048",
     "shutdown_timeout": "5m",
@@ -147,7 +157,8 @@
     "ssh_timeout": "60m",
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
-    "version": "0.0.0",
-    "vm_name": "UbuntuMate1604LTS"
+    "vm_name": "UbuntuMate1604LTS",
+    "cloud_token": "v7eyWXFdn4zilg.atlasv1.HvNzyZ9zVO6sLvUUrPwS4Q7BGFm0Kyq4vTAzgIzNSra2uUQF7HhaHQoQzxzyBkcC3Xs",
+    "version": "1.0.1"
   }
 }
