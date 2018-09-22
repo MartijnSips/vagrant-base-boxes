@@ -158,7 +158,7 @@
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
     "vm_name": "UbuntuMate1604LTS",
-    "cloud_token": "v7eyWXFdn4zilg.atlasv1.HvNzyZ9zVO6sLvUUrPwS4Q7BGFm0Kyq4vTAzgIzNSra2uUQF7HhaHQoQzxzyBkcC3Xs",
+    "cloud_token": "<cloudtoken>",
     "version": "1.0.1"
   }
 }

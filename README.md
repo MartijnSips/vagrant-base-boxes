@@ -12,11 +12,11 @@ The scripts in this repository will create a base box to be used with vagrant
 
 You need to have the following software installed. (The version within the brackets are the versions where these scripts are tested with.)
 
-- Packer (1.2.1)
-- Vagrant (2.0.3)
-- Virtualbox (5.2.8)
+- Packer (1.3.1)
+- Vagrant (2.1.5)
+- Virtualbox (5.2.18)
 
-#### Windows 10 Professional
+#### Windows 10 Professional (1803)
 
 Before you start building and uploading your own Windows 10 Professional base box you need to adjust 2 things:
 - In the Windows10Professional.json file you need to fill in your personal vagrant cloud key (use the cloud_token) if you want to upload your own version. In that case, please also rename the box.
