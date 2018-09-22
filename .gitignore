@@ -13,3 +13,4 @@ iso/*
 
 # Generated files
 *.tmp
+*.bak
