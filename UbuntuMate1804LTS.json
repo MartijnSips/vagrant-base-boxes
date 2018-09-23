@@ -158,6 +158,6 @@
     "start_retry_timeout": "5m",
     "vm_name": "UbuntuMate1804LTS",
     "cloud_token": "<cloudtoken>",
-	  "version": "1.0.1"
+	  "version": "1.0.2"
   }
 }
