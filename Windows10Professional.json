@@ -2,18 +2,18 @@
   "_comment": "Base Box for .NET development on a Windows 10 virtual image.",
   "variables": {
     "vm_name": "Windows10Professional",
-    "iso_url": "./iso/en_windows_10_business_edition_version_1803_updated_aug_2018_x64_dvd_5d7e729e.iso",
+    "iso_url": "./iso/en_windows_10_business_edition_version_1809_updated_sept_2018_x64_dvd_d57f2c0d.iso",
     "iso_checksum_type": "sha1",
-    "iso_checksum": "2b15efd7926ab9db9181cd7b599452cccc3774de",
-    "autounattend": "./answer_files/Windows10ProfessionalN1803Aug/Autounattend.xml",
+    "iso_checksum": "0BE4E80687D8D7EFF8C80C5AA8C03B15E2F77256",
+    "autounattend": "./answer_files/Windows10ProfessionalN1809Sept/Autounattend.xml",
     "headless": "false",
     "username": "vagrant",
     "password": "vagrant",
     "memory": "8192",
     "disk_size": "100000",
     "cpus": "4",
-    "cloud_token": "<cloudtoken>",
-    "version": "0.0.2"
+    "cloud_token": "<cloud_token>",
+    "version": "0.0.3"
   },
   "builders": [
     {
