@@ -42,7 +42,7 @@
             </DiskConfiguration>
             <UserData>
                 <ProductKey>
-                    <Key></Key>
+                    <Key>DMRVQ-4N2WM-2F6YY-QWM3P-P9XT6</Key>
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
@@ -54,7 +54,7 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows 10 Pro N</Value>
+                            <Value>Windows 10 Education</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
@@ -65,6 +65,9 @@
                     <WillShowUI>OnError</WillShowUI>
                 </OSImage>
             </ImageInstall>
+            <Restart>Restart</Restart>
+            <EnableNetwork>true</EnableNetwork>
+            <EnableFirewall>true</EnableFirewall>
         </component>
         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <InputLocale>en-US</InputLocale>
@@ -302,5 +305,5 @@
             <SkipAutoActivation>true</SkipAutoActivation>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim://deathstar/users/martijn%20sips/documents/projects/prive/vagrant-base-boxes/iso/en_windows_10_business_edition_version_1803_updated_aug_2018_x64_dvd_5d7e729e/sources/install.wim#Windows 10 Pro N" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
+    <cpi:offlineImage cpi:source="wim://deathstar/users/martijn%20sips/documents/projects/prive/vagrant-base-boxes/iso/en_windows_10_business_editions_version_1903_x64_dvd_37200948/sources/install.wim#Windows 10 Pro N" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>

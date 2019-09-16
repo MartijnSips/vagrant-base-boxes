@@ -127,7 +127,7 @@
     "communicator": "ssh",
     "country": "US",
     "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.1 LTS",
-    "disk_size": "50000",
+    "disk_size": "60000",
     "domain": "",
     "headless": "false",
     "http_directory": ".",
@@ -135,7 +135,7 @@
     "http_port_min": "8000",
     "iso_checksum_type": "sha256",
     "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/SHA256SUMS",
-    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.1-server-amd64.iso",
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.2-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
     "locale": "en_US.UTF-8",
@@ -157,7 +157,7 @@
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
     "vm_name": "UbuntuMate1804LTS",
-    "cloud_token": "<cloudtoken>",
-	  "version": "1.0.2"
+    "cloud_token": "MkRAe8k76KSIYQ.atlasv1.CRsk8smLib11hZ7ONf7zPxaeIoslpgx0yZj8yAk2AVCJfhp1Tztz5OKjhRoTx5c7Yzc",
+	  "version": "1.0.3"
   }
 }
