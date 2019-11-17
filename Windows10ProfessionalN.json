@@ -2,9 +2,9 @@
   "_comment": "Base Box for .NET development on a Windows 10 virtual image.",
   "variables": {
     "vm_name": "Windows10ProfessionalN",
-    "iso_url": "./iso/en_windows_10_business_editions_version_1903_x64_dvd_37200948.iso",
+    "iso_url": "./iso/Win10_1909_EnglishInternational_x64.iso",
     "iso_checksum_type": "sha1",
-    "iso_checksum": "DD9A1A27C5C58140B13FACF6755A0C4A40FF0A6D",
+    "iso_checksum": "31549049b73cef72456af0bff71f494e76e1f506",
     "autounattend": "./answer_files/Windows10ProfessionalN1903Apr/Autounattend.xml",
     "headless": "false",
     "username": "vagrant",
@@ -12,8 +12,8 @@
     "memory": "8192",
     "disk_size": "100000",
     "cpus": "4",
-    "cloud_token": "MkRAe8k76KSIYQ.atlasv1.CRsk8smLib11hZ7ONf7zPxaeIoslpgx0yZj8yAk2AVCJfhp1Tztz5OKjhRoTx5c7Yzc",
-    "version": "0.0.4"
+    "cloud_token": "<put here your vagrant cloud token>",
+    "version": "0.0.6"
   },
   "builders": [
     {
