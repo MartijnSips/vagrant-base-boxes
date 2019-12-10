@@ -84,8 +84,6 @@
       "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "inline": [
         "echo '========================================================================================================================'",
-        "echo 'Install Ubuntu Mate 18.04 desktop ...'",
-        "apt-get install -y ubuntu-mate-desktop",
         "echo 'Adding vagrant to sudoers list ...'",
         "echo 'vagrant ALL=NOPASSWD:ALL' > /etc/sudoers.d/vagrant",
         "echo 'Install vagrant SSH key ...'",
@@ -93,6 +91,9 @@
         "wget --no-check-certificate https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -O /home/vagrant/.ssh/authorized_keys",
         "chmod 0600 /home/vagrant/.ssh/authorized_keys",
         "chown -R vagrant:vagrant /home/vagrant/.ssh",
+        "echo Updating/Upgrading ubuntu ...",
+        "apt install -y ansible",
+        "apt update && apt upgrade -y",
         "echo Installing VirtualBox Guest Additions {{ .Version }} ...",
         "apt-get update && sudo apt-get upgrade -y",
         "apt-get install gcc make perl -y", 
@@ -100,9 +101,8 @@
         "mkdir /tmp/isomount",
         "mount -t iso9660 -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /tmp/isomount",
         "/tmp/isomount/VBoxLinuxAdditions.run",
-        "echo Updating/Upgrading ubuntu ...",
-        "apt-get install ansible -y",
-        "apt-get update && sudo apt-get upgrade -y"
+        "echo 'Install Ubuntu Mate 18.04 desktop ...'",
+        "apt-get install -y ubuntu-mate-desktop"
       ]
     }
   ],
@@ -126,7 +126,7 @@
     "boot_wait": "3s",
     "communicator": "ssh",
     "country": "US",
-    "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.1 LTS",
+    "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.3 LTS",
     "disk_size": "60000",
     "domain": "",
     "headless": "false",
@@ -135,7 +135,7 @@
     "http_port_min": "8000",
     "iso_checksum_type": "sha256",
     "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/SHA256SUMS",
-    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.2-server-amd64.iso",
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.3-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
     "locale": "en_US.UTF-8",
@@ -157,7 +157,7 @@
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
     "vm_name": "UbuntuMate1804LTS",
-    "cloud_token": "MkRAe8k76KSIYQ.atlasv1.CRsk8smLib11hZ7ONf7zPxaeIoslpgx0yZj8yAk2AVCJfhp1Tztz5OKjhRoTx5c7Yzc",
-	  "version": "1.0.3"
+    "cloud_token": "<put your vagrant code here>",
+	  "version": "1.0.5"
   }
 }
