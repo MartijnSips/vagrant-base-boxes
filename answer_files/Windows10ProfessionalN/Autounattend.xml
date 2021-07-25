@@ -42,7 +42,7 @@
             </DiskConfiguration>
             <UserData>
                 <ProductKey>
-                    <Key>DMRVQ-4N2WM-2F6YY-QWM3P-P9XT6</Key>
+                    <Key><put your windows 10 key here></Key>
                     <WillShowUI>Never</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
@@ -54,7 +54,7 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows 10 Education</Value>
+                            <Value>Windows 10 Pro N</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
@@ -305,5 +305,4 @@
             <SkipAutoActivation>true</SkipAutoActivation>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim://deathstar/users/martijn%20sips/documents/projects/prive/vagrant-base-boxes/iso/en_windows_10_business_editions_version_1903_x64_dvd_37200948/sources/install.wim#Windows 10 Pro N" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>

@@ -1,93 +1,118 @@
 {
   "_comment": "Base Box for .NET development on a Windows 10 virtual image.",
-  "variables": {
-    "vm_name": "Windows10ProfessionalN",
-    "iso_url": "./iso/Win10_1909_EnglishInternational_x64.iso",
-    "iso_checksum_type": "sha1",
-    "iso_checksum": "31549049b73cef72456af0bff71f494e76e1f506",
-    "autounattend": "./answer_files/Windows10ProfessionalN1903Apr/Autounattend.xml",
-    "headless": "false",
-    "username": "vagrant",
-    "password": "vagrant",
-    "memory": "8192",
-    "disk_size": "100000",
-    "cpus": "4",
-    "cloud_token": "<put here your vagrant cloud token>",
-    "version": "0.0.6"
-  },
   "builders": [
     {
-      "type": "virtualbox-iso",
-      "name": "virtualbox-{{user `vm_name`}}",
-      "vm_name": "packer-{{user `vm_name`}}",
-      "output_directory": "output-{{user `vm_name`}}",
-      "virtualbox_version_file": ".vbox_version",
-      "headless": "{{user `headless`}}",
       "boot_wait": "10m",
-      "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "communicator": "winrm",
-      "winrm_username": "{{ user `username` }}",
-      "winrm_password": "{{ user `password` }}",
-      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
-      "guest_os_type": "Windows10_64",
-      "guest_additions_mode": "attach",
       "disk_size": "{{user `disk_size`}}",
       "floppy_files": [
         "{{user `autounattend`}}",
-		    "{{pwd}}/scripts/Windows/fixnetwork.ps1"
+        "{{pwd}}/scripts/Windows/fixnetwork.ps1"
       ],
+      "guest_additions_mode": "attach",
+      "guest_os_type": "Windows10_64",
+      "headless": "{{user `headless`}}",
+      "iso_checksum": "{{user `iso_checksum_type`}}:{{user `iso_checksum`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "name": "virtualbox-{{user `vm_name`}}",
+      "output_directory": "output-{{user `vm_name`}}",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "type": "virtualbox-iso",
       "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}" ],
-        [ "modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}" ],
-        [ "modifyvm", "{{.Name}}", "--clipboard", "bidirectional" ],
-        [ "modifyvm", "{{.Name}}", "--draganddrop", "bidirectional" ],
-		    [ "modifyvm", "{{.Name}}", "--vram", "256" ]
-      ]
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "windows-shell",
-      "inline": [
-        "certutil -f -addstore \"TrustedPublisher\" E:\\cert\\vbox-sha1.cer",
-        "E:\\VBoxWindowsAdditions /S"
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--clipboard",
+          "bidirectional"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--draganddrop",
+          "bidirectional"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "256"
+        ]
       ],
-      "pause_before": "1m"
-    },
-    {
-      "type": "windows-restart"
-    },
-	{
-      "type": "powershell",
-      "inline": [
-	      "Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force",
-        "Install-Module PSWindowsUpdate -force",
-        "Get-WUInstall -AcceptAll -MicrosoftUpdate -Verbose",
-        "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
-        "slmgr //B /upk"
-      ],
-      "pause_before": "1m"
-    },
-    {
-      "type": "windows-restart"
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "packer-{{user `vm_name`}}",
+      "winrm_password": "{{ user `password` }}",
+      "winrm_username": "{{ user `username` }}"
     }
   ],
   "post-processors": [
     [
       {
-        "type": "vagrant",
         "keep_input_artifact": false,
-        "vagrantfile_template": "{{user `vm_name`}}.template",
-        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
+        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "{{user `vm_name`}}.template"
       },
       {
-        "type": "vagrant-cloud",
-        "box_tag": "martijnsips/Win10Pro",
         "access_token": "{{ user `cloud_token` }}",
+        "box_tag": "martijnsips/Win10Pro",
+        "type": "vagrant-cloud",
         "version": "{{ user `version` }}"
       }
     ]
-  ]
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "certutil -f -addstore \"TrustedPublisher\" E:\\cert\\vbox-sha1.cer",
+        "E:\\VBoxWindowsAdditions /S"
+      ],
+      "pause_before": "1m",
+      "type": "windows-shell"
+    },
+    {
+      "type": "windows-restart"
+    },
+    {
+      "inline": [
+        "Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force",
+        "Install-Module PSWindowsUpdate -force",
+        "Get-WUInstall -AcceptAll -MicrosoftUpdate -Verbose",
+        "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
+        "slmgr //B /upk"
+      ],
+      "pause_before": "1m",
+      "type": "powershell"
+    },
+    {
+      "type": "windows-restart"
+    }
+  ],
+  "variables": {
+    "autounattend": "./answer_files/Windows10ProfessionalN/Autounattend.xml",
+    "cloud_token": "kjxv80IYoSdBXQ.atlasv1.eVTI7TsxLwaaBiXqDgUgMsaeQ22m88RCzdzcz4fXa6Lfz8ZmdNJE5t9Iz8wzmJ8WHOA",
+    "cpus": "4",
+    "disk_size": "100000",
+    "headless": "false",
+    "iso_checksum": "7D91151B5426D11FA70E6BABA02F464AB7B1B17AB2BDD302E9078C40595AB7E6",
+    "iso_checksum_type": "sha256",
+    "iso_url": "./iso/en-us_windows_10_business_editions_version_20h2_updated_jul_2021_x64_dvd_15d0b1ca.iso",
+    "memory": "8192",
+    "password": "vagrant",
+    "username": "vagrant",
+    "version": "0.1.0",
+    "vm_name": "Windows10ProfessionalN"
+  }
 }
+
