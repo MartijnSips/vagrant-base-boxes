@@ -1,32 +1,31 @@
 {
   "builders": [
-   {
-    "type": "virtualbox-iso",
-    "name": "virtualbox",
-    "output_directory": "{{user `output_directory`}}",
-    "boot_command": [
-        "<esc><f6><esc>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs>",
-        "initrd=/install/initrd.gz ",
-        "auto=true ",
-        "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `preseed_file`}} ",
-        "language={{user `language`}} ",
-        "country={{user `country`}} ",
-        "locale={{user `locale`}} ",
-        "hostname={{user `vm_name`}} ",
-        "domain={{user `domain`}} ",
-        "interface=auto ",
-        "console-setup/ask_detect=false ",
-        "keyboard-configuration/layoutcode={{user `keyboard`}} ",
-        "vga=788 noprompt quiet --<enter>"
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz<wait>",
+        " auto<wait>",
+        " console-setup/ask_detect=false<wait>",
+        " console-setup/layoutcode=us<wait>",
+        " console-setup/modelcode=pc105<wait>",
+        " debconf/frontend=noninteractive<wait>",
+        " debian-installer=en_US<wait>",
+        " fb=false<wait>",
+        " initrd=/install/initrd.gz<wait>",
+        " kbd-chooser/method=us<wait>",
+        " keyboard-configuration/layout=USA<wait>",
+        " keyboard-configuration/variant=USA<wait>",
+        " locale=en_US<wait>",
+        " netcfg/get_domain=vm<wait>",
+        " netcfg/get_hostname=vagrant<wait>",
+        " grub-installer/bootdev=/dev/sda<wait>",
+        " noapic<wait>",
+        " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+        " -- <wait>",
+        "<enter><wait>"
       ],
       "boot_wait": "{{user `boot_wait`}}",
       "communicator": "{{user `communicator`}}",
@@ -38,26 +37,23 @@
       "hard_drive_interface": "sata",
       "hard_drive_nonrotational": false,
       "headless": "{{user `headless`}}",
-      "http_directory": "{{user `http_directory`}}",
-      "http_port_max": "{{user `http_port_max`}}",
-      "http_port_min": "{{user `http_port_min`}}",
-      "iso_checksum_url": "{{user `iso_checksum_url`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "http_directory": "http",
+      "iso_checksum": "file:{{user `iso_checksum_url`}}",
       "iso_url": "{{user `iso_url`}}",
       "keep_registered": false,
+      "name": "virtualbox",
+      "output_directory": "{{user `output_directory`}}",
       "post_shutdown_delay": "0s",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -E -S poweroff",
       "shutdown_timeout": "{{user `shutdown_timeout`}}",
       "skip_export": false,
+      "skip_nat_mapping": false,
       "ssh_disable_agent_forwarding": "{{user `ssh_disable_agent_forwarding`}}",
       "ssh_file_transfer_method": "{{user `ssh_file_transfer_method`}}",
       "ssh_handshake_attempts": "{{user `ssh_handshake_attempts`}}",
-      "ssh_host_port_max": "{{user `ssh_host_port_max`}}",
-      "ssh_host_port_min": "{{user `ssh_host_port_min`}}",
       "ssh_password": "{{user `ssh_password`}}",
       "ssh_port": "{{user `ssh_port`}}",
       "ssh_pty": "{{user `ssh_pty`}}",
-      "ssh_skip_nat_mapping": false,
       "ssh_timeout": "{{user `ssh_timeout`}}",
       "ssh_username": "{{user `ssh_username`}}",
       "vboxmanage": [
@@ -78,9 +74,24 @@
       "vm_name": "{{user `vm_name`}}"
     }
   ],
+  "post-processors": [
+    [
+      {
+        "keep_input_artifact": false,
+        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "{{user `vm_name`}}.template"
+      },
+      {
+        "access_token": "{{ user `cloud_token` }}",
+        "box_tag": "martijnsips/{{ user `vm_name` }}",
+        "type": "vagrant-cloud",
+        "version": "{{ user `version` }}"
+      }
+    ]
+  ],
   "provisioners": [
     {
-	  "type": "shell",
       "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "inline": [
         "echo '========================================================================================================================'",
@@ -93,55 +104,41 @@
         "chown -R vagrant:vagrant /home/vagrant/.ssh",
         "echo Updating/Upgrading ubuntu ...",
         "apt install -y ansible",
-        "apt update && apt upgrade -y",
+        "apt update \u0026\u0026 apt upgrade -y",
         "echo Installing VirtualBox Guest Additions {{ .Version }} ...",
-        "apt-get update && sudo apt-get upgrade -y",
-        "apt-get install gcc make perl -y", 
+        "apt-get update \u0026\u0026 sudo apt-get upgrade -y",
+        "apt-get install gcc make perl -y",
         "apt-get install virtualbox-guest-additions-iso -y",
         "mkdir /tmp/isomount",
         "mount -t iso9660 -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /tmp/isomount",
         "/tmp/isomount/VBoxLinuxAdditions.run",
         "echo 'Install Ubuntu Mate 18.04 desktop ...'",
         "apt-get install -y ubuntu-mate-desktop"
-      ]
+      ],
+      "type": "shell"
     }
-  ],
-  "post-processors": [
-    [
-      {
-        "type": "vagrant",
-        "keep_input_artifact": false,
-        "vagrantfile_template": "{{user `vm_name`}}.template",
-        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box"
-      },
-      {
-        "type": "vagrant-cloud",
-        "box_tag": "martijnsips/{{ user `vm_name` }}",
-        "access_token": "{{ user `cloud_token` }}",
-        "version": "{{ user `version` }}"
-      }
-    ]
   ],
   "variables": {
     "boot_wait": "3s",
+    "cloud_token": "kjxv80IYoSdBXQ.atlasv1.eVTI7TsxLwaaBiXqDgUgMsaeQ22m88RCzdzcz4fXa6Lfz8ZmdNJE5t9Iz8wzmJ8WHOA",
     "communicator": "ssh",
     "country": "US",
-    "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.3 LTS",
+    "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.6 LTS",
     "disk_size": "60000",
     "domain": "",
     "headless": "false",
-    "http_directory": ".",
+    "http_directory": "http",
     "http_port_max": "9000",
     "http_port_min": "8000",
     "iso_checksum_type": "sha256",
     "iso_checksum_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/SHA256SUMS",
-    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.3-server-amd64.iso",
+    "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.6-server-amd64.iso",
     "keyboard": "us",
     "language": "en",
     "locale": "en_US.UTF-8",
     "output_directory": "build/{{isotime \"2006-01-02-15-04-05\"}}",
     "packer_cache_dir": "{{env `PACKER_CACHE_DIR`}}",
-    "preseed_file": "scripts/ubuntu/1804/preseed.cfg",
+    "preseed_file": "preseed.cfg",
     "qemu_binary": "qemu-system-x86_64",
     "ram_size": "2048",
     "shutdown_timeout": "5m",
@@ -156,8 +153,8 @@
     "ssh_timeout": "60m",
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
-    "vm_name": "UbuntuMate1804LTS",
-    "cloud_token": "<put your vagrant code here>",
-	  "version": "1.0.5"
+    "version": "1.0.6",
+    "vm_name": "UbuntuMate1804LTS"
   }
 }
+
