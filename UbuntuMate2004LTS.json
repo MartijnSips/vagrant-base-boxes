@@ -1,0 +1,117 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+          " <wait>",
+          " <wait>",
+          " <wait>",
+          " <wait>",
+          " <wait>",
+          "<esc><wait>",
+          "<f6><wait>",
+          "<esc><wait>",
+          "<bs><bs><bs><bs><wait>",
+          " autoinstall<wait5>",
+          " ds=nocloud-net<wait5>",
+          ";s=http://<wait5>{{.HTTPIP}}<wait5>:{{.HTTPPort}}/<wait5>",
+          " ---<wait5>",
+          "<enter><wait5>"
+      ],
+      "boot_wait": "5s",
+      "cpus": "{{ user `cpus` }}",
+      "disk_size": "{{user `disk_size`}}",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_url": "{{ user `guest_additions_url` }}",
+      "guest_os_type": "Ubuntu_64",
+      "hard_drive_interface": "sata",
+      "headless": "{{ user `headless` }}",
+      "http_directory": "{{user `http_directory`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "memory": "{{ user `memory` }}",
+      "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "ssh_username": "vagrant",
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{ user `template` }}"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "keep_input_artifact": false,
+        "output": "packer_{{user `vm_name`}}_{{.Provider}}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "{{user `vm_name`}}.template"
+      },
+      {
+        "access_token": "{{ user `cloud_token` }}",
+        "box_tag": "martijnsips/{{ user `vm_name` }}",
+        "type": "vagrant-cloud",
+        "version": "{{ user `version` }}"
+      }
+    ]
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+      "inline": [
+        "echo '========================================================================================================================'",
+        "echo 'Adding vagrant to sudoers list ...'",
+        "echo 'vagrant ALL=NOPASSWD:ALL' > /etc/sudoers.d/vagrant",
+        "echo 'Install vagrant SSH key ...'",
+        "mkdir -pm 700 /home/vagrant/.ssh",
+        "wget --no-check-certificate https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -O /home/vagrant/.ssh/authorized_keys",
+        "chmod 0600 /home/vagrant/.ssh/authorized_keys",
+        "chown -R vagrant:vagrant /home/vagrant/.ssh",
+        "echo Updating/Upgrading ubuntu ...",
+        "apt install -y ansible",
+        "apt update \u0026\u0026 apt upgrade -y",
+        "echo Installing VirtualBox Guest Additions {{ .Version }} ...",
+        "apt-get update \u0026\u0026 sudo apt-get upgrade -y",
+        "apt-get install gcc make perl -y",
+        "apt-get install virtualbox-guest-additions-iso -y",
+        "mkdir /tmp/isomount",
+        "mount -t iso9660 -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /tmp/isomount",
+        "/tmp/isomount/VBoxLinuxAdditions.run",
+        "echo 'Install Ubuntu Mate desktop ...'",
+        "sudo add-apt-repository ppa:ubuntu-mate-dev/fresh-mate",
+        "apt-get install -y mate-desktop-environment"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "ubuntu-20.04",
+    "build_directory": "../../builds",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "cpus": "2",
+    "disk_size": "65536",
+    "git_revision": "__unknown_git_revision__",
+    "guest_additions_url": "",
+    "headless": "",
+    "http_directory": "{{template_dir}}\\scripts\\ubuntu\\2004",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "hyperv_generation": "2",
+    "hyperv_switch": "bento",
+    "iso_checksum": "f8e3086f3cea0fb3fefb29937ab5ed9d19e767079633960ccb50e76153effc98",
+    "iso_name": "ubuntu-20.04.3-live-server-amd64.iso",
+    "memory": "1024",
+    "mirror": "http://releases.ubuntu.com",
+    "mirror_directory": "focal",
+    "name": "ubuntu-20.04",
+    "no_proxy": "{{env `no_proxy`}}",
+    "preseed_path": "preseed.cfg",
+    "qemu_display": "none",
+    "version": "1.0.0",
+    "vm_name": "UbuntuMate2004LTS",
+    "cloud_token": "kjxv80IYoSdBXQ.atlasv1.eVTI7TsxLwaaBiXqDgUgMsaeQ22m88RCzdzcz4fXa6Lfz8ZmdNJE5t9Iz8wzmJ8WHOA",
+    "ssh_password": "vagrant"
+  }
+}
+
