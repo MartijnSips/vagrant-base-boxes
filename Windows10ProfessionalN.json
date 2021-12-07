@@ -101,7 +101,6 @@
   ],
   "variables": {
     "autounattend": "./answer_files/Windows10ProfessionalN/Autounattend.xml",
-    "cloud_token": "kjxv80IYoSdBXQ.atlasv1.eVTI7TsxLwaaBiXqDgUgMsaeQ22m88RCzdzcz4fXa6Lfz8ZmdNJE5t9Iz8wzmJ8WHOA",
     "cpus": "4",
     "disk_size": "100000",
     "headless": "false",
@@ -112,7 +111,8 @@
     "password": "vagrant",
     "username": "vagrant",
     "version": "0.1.0",
-    "vm_name": "Windows10ProfessionalN"
+    "vm_name": "Windows10ProfessionalN",
+    "cloud_token": "<Put your vagrant cloud token here>"
   }
 }
 

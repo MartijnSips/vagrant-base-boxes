@@ -120,7 +120,6 @@
   ],
   "variables": {
     "boot_wait": "3s",
-    "cloud_token": "<Put your cloud token here.>",
     "communicator": "ssh",
     "country": "US",
     "description": "Base box for 64-bit x86 Ubuntu Bionic Beaver 18.04.6 LTS",
@@ -154,7 +153,8 @@
     "ssh_username": "vagrant",
     "start_retry_timeout": "5m",
     "version": "1.0.6",
-    "vm_name": "UbuntuMate1804LTS"
+    "vm_name": "UbuntuMate1804LTS",
+    "cloud_token": "<Put your vagrant cloud token here>"
   }
 }
 
