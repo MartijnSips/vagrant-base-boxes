@@ -81,10 +81,11 @@
         "mkdir /tmp/isomount",
         "mount -t iso9660 -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /tmp/isomount",
         "/tmp/isomount/VBoxLinuxAdditions.run",
-        "echo 'Install Ubuntu Mate desktop ...'",
-        "echo /usr/sbin/lightdm > default-display-manager",
-        "mv default-display-manager /etc/X11",
-        "DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-mate-desktop",
+        "echo 'Install Ubuntu desktop ...'",
+        "echo /usr/sbin/lightdm > /etc/X11/default-display-manager",
+        "DEBIAN_FRONTEND=noninteractive apt install -y lightdm",
+        "DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-desktop",
+        "systemctl restart lightdm",
         "echo Updating/Upgrading ubuntu ...",
         "DEBIAN_FRONTEND=noninteractive apt update -y \u0026\u0026 apt upgrade -y"
       ],
@@ -115,7 +116,7 @@
     "preseed_path": "preseed.cfg",
     "qemu_display": "none",
     "version": "1.1.2",
-    "vm_name": "UbuntuMate2110",
+    "vm_name": "Ubuntu2110",
     "cloud_token": "<Put your vagrant cloud keyu here>",
     "ssh_password": "vagrant"
   }
