@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.guest = :linux
+
+  config.vm.provider :virtualbox do |vb|
+	  vb.gui = true
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    DEBIAN_FRONTEND=noninteractive apt-get update -y
+    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+  SHELL
+
+end
