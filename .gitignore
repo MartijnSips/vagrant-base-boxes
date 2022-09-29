@@ -1,8 +1,9 @@
-# Packer output
+# Packer
 build
 packer_cache
 output-*
 *.box
+*.auto.pkrvars.hcl
 
 # Iso's
 iso/*
